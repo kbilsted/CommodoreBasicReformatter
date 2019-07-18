@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29102.190
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommodoreBasicReformatter", "CommodoreBasicReformatter\CommodoreBasicReformatter.csproj", "{2D25469B-8DF4-46E1-A067-E9E83D71F9C3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommodoreBasicReformatterTests", "CommodoreBasicReformatterTests\CommodoreBasicReformatterTests.csproj", "{D6812581-F4AA-4813-AB8A-C9BED3F3DD75}"
+	ProjectSection(ProjectDependencies) = postProject
+		{2D25469B-8DF4-46E1-A067-E9E83D71F9C3} = {2D25469B-8DF4-46E1-A067-E9E83D71F9C3}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2D25469B-8DF4-46E1-A067-E9E83D71F9C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D25469B-8DF4-46E1-A067-E9E83D71F9C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D25469B-8DF4-46E1-A067-E9E83D71F9C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D25469B-8DF4-46E1-A067-E9E83D71F9C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6812581-F4AA-4813-AB8A-C9BED3F3DD75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6812581-F4AA-4813-AB8A-C9BED3F3DD75}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6812581-F4AA-4813-AB8A-C9BED3F3DD75}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6812581-F4AA-4813-AB8A-C9BED3F3DD75}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {396B4085-198E-4730-AFCA-68E0E77AC80F}
+	EndGlobalSection
+EndGlobal
