@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Text;
 
 namespace CommodoreBasicReformatter
 {
@@ -7,16 +8,17 @@ namespace CommodoreBasicReformatter
     {
         static void Main(string[] args)
         {
-            var result = new Reformatter().Reformat(File.ReadAllText(args[0]));
-            if (args.Length == 0)
+            if (args.Length != 2)
             {
                 Console.WriteLine("Missing arguments!");
                 Console.WriteLine("    USAGE");
-                Console.WriteLine("CommodoreBasicReformatter <basicfile>");
+                Console.WriteLine("CommodoreBasicReformatter <infile> <outfile>");
                 return;
             }
 
-            Console.WriteLine(result);
+            var result = new Reformatter().Reformat(File.ReadAllText(args[0]), false);
+
+            File.WriteAllBytes(args[1], Encoding.ASCII.GetBytes(result));
         }
     }
 }

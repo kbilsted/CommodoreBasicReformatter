@@ -88,7 +88,7 @@ namespace CommodoreBasicReformatter
 
     class GramarStmt
     {
-        readonly List<Token> Content;
+        public readonly List<Token> Content;
 
         public GramarStmt(List<Token> content)
         {
@@ -119,8 +119,8 @@ namespace CommodoreBasicReformatter
 
     class GrammarLine
     {
-        int LineNumber;
-        List<GramarStmt> Content;
+        public readonly int LineNumber;
+        public readonly List<GramarStmt> Content;
 
         public GrammarLine(int linenumber, List<GramarStmt> content)
         {
