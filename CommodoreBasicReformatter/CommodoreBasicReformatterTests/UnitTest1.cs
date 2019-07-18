@@ -1,4 +1,6 @@
 using System;
+using System.IO;
+using System.Net;
 using CommodoreBasicReformatter;
 using Xunit;
 
@@ -190,11 +192,236 @@ namespace CommodoreBasicReformatterTests
 930 for z = 15 to 0 step-1 : poke vl,z : poke wf,129
 940 for q = 0 to 2 : next q : poke wf,128 : next z : return
 ";
+
+        private static string RagingRobotsRenumberedOut = @"1 rem*********************************
+2 rem* RAGING ROBOTS    COMMODORE 64 *
+3 rem* BY LARRY HATCH         V10.28 *
+4 rem* MENLO PARK  CALIF 94025  1983 *
+5 rem*********************************
+100 poke 894,0
+101 poke 895,0
+102 poke 53280,9
+103 poke 53281,0
+110 clr
+111 print "".. RAGING ROBOTS  BY LARRY HATCH""
+120 print ""V _raging robot.  Q _ our hero.""
+130 print ""use shift and cursor keys for vertical""
+140 print ""and horizontal moves.""
+141 poke 53296,0
+150 print ""the unshifted       f1   f3""
+160 print ""function keys         M N""
+170 print ""are for moves  ==>     Q ""
+180 print ""digaonally as         N M""
+190 print ""shown here.         f7   f5""
+200 print ""the robots aren't very bright and they""
+210 print ""will chase you across a minefield!""
+220 print "" .. . _ minefield.""
+230 print ""they always move horizontally first.""
+240 print "".press any key to play Z""
+241 nr = 30
+250 vl = 54296
+251 ad = 54277
+252 p1 = 54273
+253 p3 = 54287
+254 wf = 54276
+260 qa = 198
+261 qb = 214
+262 sc = 1024
+263 cs = 55296
+264 poke qa,0
+265 z$ = """"
+270 rt = ti
+271 wait qa,1
+272 get z$
+273 poke qa,0
+274 rq = ti-rt
+280 rr = rq*rnd(0)
+281 dim r(nr),p(nr)
+282 r = nr
+290 print "".""
+291 for i = 1 to 80
+292 poke vl,5
+293 poke vl,0
+300 mf = int(988*rnd(rr))+12
+301 poke sc+mf,102
+310 poke cs+mf,5
+311 next i
+312 for i = 1 to nr
+313 poke vl,10
+320 r(i)= int(988*rnd(rr))+12
+321 if r(i)= 500 then 320
+330 poke sc+r(i),214
+331 poke cs+r(i),4
+332 p(i)= 1
+340 poke vl,0
+341 next i
+342 yu = 500
+343 poke sc+yu,81
+350 poke cs+yu,1
+351 poke qa,0
+352 ys = peek(895)
+360 if r = 0 then print "".you win""
+361 ys = ys+1
+362 goto 840
+370 print "".your turn  ""
+371 poke qa,0
+372 wait qa,1
+380 get d$
+381 ys = peek(895)
+382 if d$ = """" then 380
+390 da = asc(d$)
+391 if da = 145 then dp =-40
+392 goto 480
+400 if da = 17 then dp = 40 : rem down
+401 goto 480
+410 if da = 157 then dp =-1 : rem left
+411 goto 480
+420 if da = 29 then dp = 1 : rem right
+421 goto 480
+430 if da = 133 then dp =-41 : rem up-left
+431 goto 480
+440 if da = 134 then dp =-39 : rem up-right
+441 goto 480
+450 if da = 135 then dp = 41 : rem down-right
+451 goto 480
+460 if da = 136 then dp = 39 : rem down-left
+461 goto 480
+470 goto 360 : rem* invalid keystroke so go back
+480 yn = yu+dp
+481 if yn<40 or yn>999 then yn = 500
+490 if peek(sc+yn)<>32 then lc = yu
+491 goto 790
+500 poke sc+yn,81
+501 poke cs+yn,1
+502 poke sc+yu,32
+510 yu = yn
+511 poke qa,0
+512 tp = 10+10*d
+513 gosub 900
+520 print "".                  ""
+521 for i = 1 to nr
+530 if peek(sc+r(i))= 32 then p(i)= 0
+531 goto 730
+540 if p(i)= 0 goto 730
+550 x1 = r(i)-40*int(r(i)/40)
+560 x2 = yu-40*int(yu/40)
+561 x = x2-x1
+570 y1 = int((r(i)-1)/40)
+571 y2 = int((yu-1)/40)
+572 y = y2-y1
+580 j1 = r(i)+sgn(x)
+581 d1 = peek(sc+j1)
+582 poke sc+r(i),32
+590 poke sc+j1,214
+591 poke cs+j1,4
+592 r(i)= j1
+600 j2 = r(i)+40*sgn(y)
+601 tp = 10+i*2
+602 gosub 900
+610 d2 = peek(sc+j2)
+611 if x = o goto 660
+620 if d1 = 81 then p(i)= 0
+621 lc = sc+yu
+622 goto 790
+630 if d1 = 102 then lc = sc+j1
+631 p(i)= 0
+632 r = r-1
+640 if d1 = 214 then lc = sc+j1
+641 p(i)= 0
+642 r = r-2
+650 if d1 = 102 or d1 = 214 then gosub 770
+651 goto 730
+660 if p(i)= 0 or y = 0 goto 730
+670 poke sc+j2,214
+671 poke cs+j2,4
+672 poke sc+r(i),32
+680 r(i)= j2
+681 tp = 30+i*2
+682 gosub 900
+690 if d2 = 81 then p(i)= 0
+691 lc = sc+yu
+692 goto 790
+700 if d2 = 102 then lc = sc+j2
+701 p(i)= 0
+702 r = r-1
+710 if d2 = 214 then lc = sc+j2
+711 p(i)= 0
+712 r = r-2
+720 if d2 = 102 or d2 = 214 then gosub 770
+730 next i
+731 rc = 0
+732 for rt = 1 to nr
+740 if peek(sc+r(rt))<>214 then p(rt)= 0
+750 if p(rt)<>0 then rc = rc+1
+760 next rt
+761 r = rc
+762 print ""."" r "". ""
+763 goto 360
+770 for j = 1 to 12
+771 poke lc,90
+772 poke lc,32
+773 next j
+780 gosub 920
+781 print ""."" r "". ""
+782 return
+790 j = 0
+791 for j = 1 to 12
+792 poke lc,90
+793 poke lc,32
+800 next j
+801 gosub 920
+802 poke sc+yu,32
+803 poke sc+yn,93
+810 poke cs+yn,1
+811 poke cs+yn-40,1
+820 poke sc+yn-40,91
+821 rs = peek(894)+1
+830 print "".truly a pity ""
+831 poke 894,rs
+840 rc = 0
+841 poke 895,ys
+842 for rt = 1 to nr
+850 if peek(sc+r(rt))<>214 then p(rt)= 0
+860 if p(rt)<>0 then rc = rc+1
+870 next rt
+871 r = rc
+872 print ""."" r "". ""
+873 poke qb,23
+874 print
+880 print ""hero"" peek(895);;""robots"" peek(894);
+890 clr : rem*sound subroutines below
+891 goto 240
+900 poke wf,0
+901 poke ad,40
+902 poke vl,15
+903 poke p1,tp
+910 poke p3,9+peek(162)/9
+911 poke wf,21
+912 return
+920 poke wf,0 : rem*explosion
+921 poke ad,7
+922 poke p1,30
+930 for z = 15 to 0 step-1
+931 poke vl,z
+932 poke wf,129
+940 for q = 0 to 2
+941 next q
+942 poke wf,128
+943 next z
+944 return
+";
         [Fact]
-        public void Test1()
+        public void Reformat()
         {
-            var output = new Reformatter().Reformat(RagingRobotsInput);
+            var output = new Reformatter().Reformat(RagingRobotsInput, false);
             Assert.Equal(RagingRobotsOut, output);
+        }
+
+        [Fact]
+        public void ReformatAndSplitLines()
+        {
+            var output = new Reformatter().Reformat(RagingRobotsInput, true);
+            Assert.Equal(RagingRobotsRenumberedOut, output);
         }
     }
 }
