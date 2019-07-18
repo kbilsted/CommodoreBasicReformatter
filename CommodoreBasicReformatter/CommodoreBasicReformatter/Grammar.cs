@@ -47,7 +47,7 @@ namespace CommodoreBasicReformatter
             if (tokens[pos].Type == TokenKind.Digit)
                 return tokens[pos++];
 
-            throw new Exception("Expected digit at token " + pos);
+            throw new Exception($"Expected digit at token {pos} token is '{tokens[pos]}'");
         }
 
         GrammarLine ParseLine()
