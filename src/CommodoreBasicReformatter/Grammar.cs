@@ -20,7 +20,7 @@ namespace CommodoreBasicReformatter
         {
             var result = new List<GrammarLine>();
 
-            while (tokens[pos].Type != TokenKind.EOF)
+            while (!Peek(TokenKind.EOF))
             {
                 result.Add(ParseLine());
             }
@@ -28,12 +28,12 @@ namespace CommodoreBasicReformatter
             return result;
         }
 
-        private void Eat(TokenKind token)
+        void Eat(TokenKind token)
         {
             if (tokens[pos].Type == TokenKind.EOF)
                 return;
 
-            if (tokens[pos].Type == token)
+            if (Peek(token))
             {
                 pos++;
                 return;
@@ -44,7 +44,7 @@ namespace CommodoreBasicReformatter
 
         Token Digit()
         {
-            if (tokens[pos].Type == TokenKind.Digit)
+            if (Peek(TokenKind.Digit))
                 return tokens[pos++];
 
             throw new Exception($"Expected digit at token {pos} token is '{tokens[pos]}'");
@@ -57,7 +57,7 @@ namespace CommodoreBasicReformatter
             var content = new List<GramarStmt>();
             content.Add(ParseStmt());
 
-            while (!IsEof() && tokens[pos].Type == TokenKind.Colon)
+            while (!IsEof() && Peek(TokenKind.Colon))
             {
                 Eat(TokenKind.Colon);
                 content.Add(ParseStmt());
@@ -71,6 +71,11 @@ namespace CommodoreBasicReformatter
         bool IsEof()
         {
             return pos == tokens.Count;
+        }
+
+        bool Peek(TokenKind type)
+        {
+            return tokens[pos].Type == type;
         }
 
         GramarStmt ParseStmt()
