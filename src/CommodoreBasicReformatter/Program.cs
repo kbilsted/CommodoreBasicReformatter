@@ -8,17 +8,27 @@ namespace CommodoreBasicReformatter
     {
         static void Main(string[] args)
         {
-            if (args.Length != 2)
+            if (args.Length != 2 && args.Length != 3)
             {
+                Console.WriteLine("CommodoreBasicReformatter (c) 2019 Kasper B. Graversen and Jacob Dahl Pind");
                 Console.WriteLine("Missing arguments!");
                 Console.WriteLine("    USAGE");
-                Console.WriteLine("CommodoreBasicReformatter <infile> <outfile>");
+                Console.WriteLine("CommodoreBasicReformatter [--split-lines] <infile> <outfile>");
                 return;
             }
 
-            var result = new Reformatter().Reformat(File.ReadAllText(args[0]), false);
+            int i = 0;
+            bool splitLines = false;
+            if (args[i] == "--split-lines")
+            {
+                splitLines = true;
+                i++;
+            }
+            var input = args[i++];
+            var output = args[i++];
 
-            File.WriteAllBytes(args[1], Encoding.ASCII.GetBytes(result));
+            var result = new Reformatter().Reformat(File.ReadAllText(input), splitLines);
+            File.WriteAllBytes(output, Encoding.ASCII.GetBytes(result));
         }
     }
 }
