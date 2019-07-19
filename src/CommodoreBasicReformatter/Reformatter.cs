@@ -25,17 +25,17 @@ namespace CommodoreBasicReformatter
             {
                 var line = astLines[l];
 
-                if (line.Content.Count > 1)
+                if (line.Stmts.Count > 1)
                 {
                     int newlinenumber = line.LineNumber + 1;
                     int insertpos = l + 1;
-                    while (line.Content.Count > 1)
+                    while (line.Stmts.Count > 1)
                     {
-                        if (line.Content[1].Content[0].Type == TokenKind.Keyword && line.Content[1].Content[0].Value.StartsWith("rem"))
+                        if (line.Stmts[1].Content[0].Type == TokenKind.Keyword && line.Stmts[1].Content[0].Value.StartsWith("rem"))
                             break;
 
-                        astLines.Insert(insertpos++, new GrammarLine(newlinenumber++, new List<GramarStmt> {line.Content[1]}));
-                        line.Content.RemoveAt(1);
+                        astLines.Insert(insertpos++, new GrammarLine(newlinenumber++, new List<GramarStmt> {line.Stmts[1]}));
+                        line.Stmts.RemoveAt(1);
                     }
                 }
             }
