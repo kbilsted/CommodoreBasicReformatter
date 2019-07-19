@@ -44,13 +44,6 @@ namespace CommodoreBasicReformatter
             pos = 0;
         }
 
-        Token ParseEOf()
-        {
-            if (pos != Text.Length)
-                return null;
-            return new Token(TokenKind.EOF, null);
-        }
-
         public List<Token> ReadAll()
         {
             var result = new List<Token>();
@@ -86,6 +79,13 @@ namespace CommodoreBasicReformatter
                 return t;
 
             throw new Exception("Stopped at " + pos + " ..." + Text.Substring(pos, Math.Min(25, Text.Length - pos)) + "...");
+        }
+
+        Token ParseEOf()
+        {
+            if (pos != Text.Length)
+                return null;
+            return new Token(TokenKind.EOF, null);
         }
 
         void SkipSpaces()

@@ -86,6 +86,24 @@ namespace CommodoreBasicReformatter
         }
     }
 
+    class GrammarLine
+    {
+        public readonly int LineNumber;
+        public readonly List<GramarStmt> Stmts;
+
+        public GrammarLine(int linenumber, List<GramarStmt> stmts)
+        {
+            LineNumber = linenumber;
+            Stmts = stmts;
+        }
+
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            return $"{LineNumber} {string.Join(" : ", Stmts.Select(x => x.ToString()))}";
+        }
+    }
+
     class GramarStmt
     {
         public readonly List<Token> Content;
@@ -114,24 +132,6 @@ namespace CommodoreBasicReformatter
             sb.Append(Content.Last().Value);
 
             return sb.ToString();
-        }
-    }
-
-    class GrammarLine
-    {
-        public readonly int LineNumber;
-        public readonly List<GramarStmt> Content;
-
-        public GrammarLine(int linenumber, List<GramarStmt> content)
-        {
-            LineNumber = linenumber;
-            Content = content;
-        }
-
-        public override string ToString()
-        {
-            var sb = new StringBuilder();
-            return $"{LineNumber} " + string.Join(" : ", Content.Select(x => x.ToString()));
         }
     }
 }
