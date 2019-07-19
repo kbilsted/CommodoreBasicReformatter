@@ -25,14 +25,13 @@ namespace CommodoreBasicReformatter
                 result.Add(ParseLine());
             }
 
+            Eat(TokenKind.EOF);
+
             return result;
         }
 
         void Eat(TokenKind token)
         {
-            if (tokens[pos].Type == TokenKind.EOF)
-                return;
-
             if (Peek(token))
             {
                 pos++;
