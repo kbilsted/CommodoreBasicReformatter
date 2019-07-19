@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace CommodoreBasicReformatter
 {
-    enum TokenKind
+    public enum TokenKind
     {
         Digit,
         Colon,
@@ -16,7 +16,7 @@ namespace CommodoreBasicReformatter
         EOF,
     }
 
-    class Token
+    public class Token
     {
         public TokenKind Type;
         public string Value;
@@ -33,7 +33,7 @@ namespace CommodoreBasicReformatter
         }
     }
 
-    class Tokenizer
+    public class Tokenizer
     {
         public string Text;
         public int pos { get; private set; }
@@ -198,9 +198,10 @@ namespace CommodoreBasicReformatter
             Token result;
             if (match == "rem")
             {
-                var commentTextExcludingNewline = "rem" + text.Substring(3, text.IndexOf('\n') - 3);
+                var posNewline = text.IndexOf('\n');
+                var commentTextExcludingNewline = $"rem {text.Substring(3, posNewline - 3).Trim()}";
                 result = new Token(TokenKind.Keyword, commentTextExcludingNewline);
-                pos += commentTextExcludingNewline.Length;
+                pos += posNewline;
             }
             else
             {

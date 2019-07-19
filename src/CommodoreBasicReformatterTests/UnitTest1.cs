@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Net;
 using CommodoreBasicReformatter;
 using Xunit;
@@ -101,11 +102,11 @@ namespace CommodoreBasicReformatterTests
 940 forq=0to2:nextq:pokewf,128:nextz:return
 ";
 
-        private static string RagingRobotsOut = @"1 rem*********************************
-2 rem* RAGING ROBOTS    COMMODORE 64 *
-3 rem* BY LARRY HATCH         V10.28 *
-4 rem* MENLO PARK  CALIF 94025  1983 *
-5 rem*********************************
+        private static string RagingRobotsOut = @"1 rem *********************************
+2 rem * RAGING ROBOTS    COMMODORE 64 *
+3 rem * BY LARRY HATCH         V10.28 *
+4 rem * MENLO PARK  CALIF 94025  1983 *
+5 rem *********************************
 100 poke 894,0 : poke 895,0 : poke 53280,9 : poke 53281,0
 110 clr : print "".. RAGING ROBOTS  BY LARRY HATCH""
 120 print ""V _raging robot.  Q _ our hero.""
@@ -143,7 +144,7 @@ namespace CommodoreBasicReformatterTests
 440 if da = 134 then dp =-39 : goto 480 : rem up-right
 450 if da = 135 then dp = 41 : goto 480 : rem down-right
 460 if da = 136 then dp = 39 : goto 480 : rem down-left
-470 goto 360 : rem* invalid keystroke so go back
+470 goto 360 : rem * invalid keystroke so go back
 480 yn = yu+dp : if yn<40 or yn>999 then yn = 500
 490 if peek(sc+yn)<>32 then lc = yu : goto 790
 500 poke sc+yn,81 : poke cs+yn,1 : poke sc+yu,32
@@ -185,19 +186,19 @@ namespace CommodoreBasicReformatterTests
 860 if p(rt)<>0 then rc = rc+1
 870 next rt : r = rc : print ""."" r "". "" : poke qb,23 : print
 880 print ""hero"" peek(895);;""robots"" peek(894);
-890 clr : goto 240 : rem*sound subroutines below
+890 clr : goto 240 : rem *sound subroutines below
 900 poke wf,0 : poke ad,40 : poke vl,15 : poke p1,tp
 910 poke p3,9+peek(162)/9 : poke wf,21 : return
-920 poke wf,0 : poke ad,7 : poke p1,30 : rem*explosion
+920 poke wf,0 : poke ad,7 : poke p1,30 : rem *explosion
 930 for z = 15 to 0 step-1 : poke vl,z : poke wf,129
 940 for q = 0 to 2 : next q : poke wf,128 : next z : return
 ";
 
-        private static string RagingRobotsRenumberedOut = @"1 rem*********************************
-2 rem* RAGING ROBOTS    COMMODORE 64 *
-3 rem* BY LARRY HATCH         V10.28 *
-4 rem* MENLO PARK  CALIF 94025  1983 *
-5 rem*********************************
+        private static string RagingRobotsRenumberedOut = @"1 rem *********************************
+2 rem * RAGING ROBOTS    COMMODORE 64 *
+3 rem * BY LARRY HATCH         V10.28 *
+4 rem * MENLO PARK  CALIF 94025  1983 *
+5 rem *********************************
 100 poke 894,0
 101 poke 895,0
 102 poke 53280,9
@@ -286,7 +287,7 @@ namespace CommodoreBasicReformatterTests
 451 goto 480
 460 if da = 136 then dp = 39 : rem down-left
 461 goto 480
-470 goto 360 : rem* invalid keystroke so go back
+470 goto 360 : rem * invalid keystroke so go back
 480 yn = yu+dp
 481 if yn<40 or yn>999 then yn = 500
 490 if peek(sc+yn)<>32 then lc = yu
@@ -389,7 +390,7 @@ namespace CommodoreBasicReformatterTests
 873 poke qb,23
 874 print
 880 print ""hero"" peek(895);;""robots"" peek(894);
-890 clr : rem*sound subroutines below
+890 clr : rem *sound subroutines below
 891 goto 240
 900 poke wf,0
 901 poke ad,40
@@ -398,7 +399,7 @@ namespace CommodoreBasicReformatterTests
 910 poke p3,9+peek(162)/9
 911 poke wf,21
 912 return
-920 poke wf,0 : rem*explosion
+920 poke wf,0 : rem *explosion
 921 poke ad,7
 922 poke p1,30
 930 for z = 15 to 0 step-1
@@ -422,6 +423,24 @@ namespace CommodoreBasicReformatterTests
         {
             var output = new Reformatter().Reformat(RagingRobotsInput, true);
             Assert.Equal(RagingRobotsRenumberedOut, output);
+        }
+
+        [Fact]
+        public void TokenizeRemLines()
+        {
+            string input =
+                @"1 REM*********************************
+";
+
+            var tokenizer=new Tokenizer(input);
+            var tokens = tokenizer.ReadAll();
+            Assert.Equal(new[]
+            {
+                TokenKind.Digit,
+                TokenKind.Keyword,
+                TokenKind.NewLine,
+                TokenKind.EOF
+            }, tokens.Select(x => x.Type).ToArray());
         }
     }
 }
