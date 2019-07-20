@@ -8,11 +8,12 @@ namespace CommodoreBasicReformatter
     /*
      * Grammar
      * PROGRAM ::= ( NEWLINE | LINE )*
-     * LINE    ::= STMT ( COLON STMT )* NEWLINE
+     * LINE    ::= DIGIT STMTS NEWLINE
+     * STMTS   ::= STMT ( COLON STMT )* 
      * STMT    ::= ( KEYWORD | DIGIT | STRING | SYMBOL )+
      * KEYWORD ::= 'to' | 'then' | 'end' | 'for' | 'next' | 'data' | 'dim' | 'read' | 'let' | 'goto' | ...
      * SYMBOL  ::= ',' | '+' | '-' | '*' | '/' | '(' | ')' | '=' | '<' | '>' | '<>' | ';' | '#'
-     * STRING  ::= 'a'..'z' ('a'..'z' | '0'..'9' | '%' | '$' )*
+     * STRING  ::= 'a'..'z' ( 'a'..'z' | '0'..'9' | '%' | '$' )*
      * DIGIT   ::= ( 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 )+
      * NEWLINE ::= '\n'
      * COLON   ::= ':'

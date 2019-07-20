@@ -60,15 +60,16 @@ which is much nicer. But we can improve readability even more by using the `--sp
 
 We've made a simple parser using the following grammar
     
-    PROGRAM ::= ( NEWLINE | LINE )*
-    LINE    ::= STMT ( COLON STMT )* NEWLINE
-    STMT    ::= ( KEYWORD | DIGIT | STRING | SYMBOL )+
-    KEYWORD ::= 'to' | 'then' | 'end' | 'for' | 'next' | 'data' | 'dim' | 'read' | 'let' | 'goto' | ...
-    SYMBOL  ::= ',' | '+' | '-' | '*' | '/' | '(' | ')' | '=' | '<' | '>' | '<>' | ';' | '#'
-    STRING  ::= 'a'..'z' ('a'..'z' | '0'..'9' | '%' | '$' )*
-    DIGIT   ::= ( 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 )+
-    NEWLINE ::= '\n'
-    COLON   ::= ':'
+     PROGRAM ::= ( NEWLINE | LINE )*
+     LINE    ::= DIGIT STMTS NEWLINE
+     STMTS   ::= STMT ( COLON STMT )* 
+     STMT    ::= ( KEYWORD | DIGIT | STRING | SYMBOL )+
+     KEYWORD ::= 'to' | 'then' | 'end' | 'for' | 'next' | 'data' | 'dim' | 'read' | 'let' | 'goto' | ...
+     SYMBOL  ::= ',' | '+' | '-' | '*' | '/' | '(' | ')' | '=' | '<' | '>' | '<>' | ';' | '#'
+     STRING  ::= 'a'..'z' ( 'a'..'z' | '0'..'9' | '%' | '$' )*
+     DIGIT   ::= ( 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 )+
+     NEWLINE ::= '\n'
+     COLON   ::= ':'
 
 we read the program by tokens and then ensure the program obey the grammar. 
 We then optionally break-up lines into several lines and finally print the parsed code into the destination file.
