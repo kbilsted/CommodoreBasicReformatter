@@ -5,6 +5,18 @@ using System.Text;
 
 namespace CommodoreBasicReformatter
 {
+    /*
+     * Grammar
+     * PROGRAM ::= ( NEWLINE | LINE )*
+     * LINE    ::= STMT ( COLON STMT )* NEWLINE
+     * STMT    ::= ( KEYWORD | DIGIT | STRING | SYMBOL )+
+     * KEYWORD ::= 'to' | 'then' | 'end' | 'for' | 'next' | 'data' | 'dim' | 'read' | 'let' | 'goto' | ...
+     * SYMBOL  ::= ',' | '+' | '-' | '*' | '/' | '(' | ')' | '=' | '<' | '>' | '<>' | ';' | '#'
+     * STRING  ::= 'a'..'z' ('a'..'z' | '0'..'9' | '%' | '$' )*
+     * DIGIT   ::= ( 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 )+
+     * NEWLINE ::= '\n'
+     * COLON   ::= ':'
+     */
     class Grammar
     {
         readonly List<Token> tokens;
@@ -30,33 +42,22 @@ namespace CommodoreBasicReformatter
             return result;
         }
 
-        void Eat(TokenKind token)
+        Token Eat(TokenKind token)
         {
             if (Peek(token))
-            {
-                pos++;
-                return;
-            }
-
-            throw new Exception($"Expecting '{token}' at pos {pos}");
-        }
-
-        Token Digit()
-        {
-            if (Peek(TokenKind.Digit))
                 return tokens[pos++];
 
-            throw new Exception($"Expected digit at token {pos} token is '{tokens[pos]}'");
+            throw new Exception($"Expecting '{token}' at pos {pos}. Token is '{tokens[pos]}'");
         }
 
         GrammarLine ParseLine()
         {
-            var lineNo = Digit();
+            var lineNo = Eat(TokenKind.Digit);
 
             var content = new List<GramarStmt>();
             content.Add(ParseStmt());
 
-            while (!IsEof() && Peek(TokenKind.Colon))
+            while (Peek(TokenKind.Colon))
             {
                 Eat(TokenKind.Colon);
                 content.Add(ParseStmt());
@@ -74,6 +75,9 @@ namespace CommodoreBasicReformatter
 
         bool Peek(TokenKind type)
         {
+            if (IsEof())
+                return type == TokenKind.EOF;
+
             return tokens[pos].Type == type;
         }
 

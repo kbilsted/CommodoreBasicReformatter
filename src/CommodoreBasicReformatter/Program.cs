@@ -10,10 +10,14 @@ namespace CommodoreBasicReformatter
         {
             if (args.Length != 2 && args.Length != 3)
             {
-                Console.WriteLine("CommodoreBasicReformatter (c) 2019 Kasper B. Graversen and Jacob Dahl Pind");
-                Console.WriteLine("Missing arguments!");
-                Console.WriteLine("    USAGE");
-                Console.WriteLine("CommodoreBasicReformatter [--split-lines] <infile> <outfile>");
+                Console.WriteLine();
+                Console.WriteLine("NAME");
+                Console.WriteLine("    CommodoreBasicReformatter");
+                Console.WriteLine("SYNTAX");
+                Console.WriteLine("    CommodoreBasicReformatter [--split-lines] <infile> <outfile>");
+                Console.WriteLine("REMARKS");
+                Console.WriteLine("    (c) 2019 Kasper B. Graversen and Jacob Dahl Pind");
+                Console.WriteLine();
                 return;
             }
 

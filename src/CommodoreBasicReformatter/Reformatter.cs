@@ -31,7 +31,9 @@ namespace CommodoreBasicReformatter
                     int insertpos = l + 1;
                     while (line.Stmts.Count > 1)
                     {
-                        if (line.Stmts[1].Content[0].Type == TokenKind.Keyword && line.Stmts[1].Content[0].Value.StartsWith("rem"))
+                        var token = line.Stmts[1].Content[0];
+                        bool isRemark = token.Type == TokenKind.Keyword && token.Value.StartsWith("rem");
+                        if (isRemark)
                             break;
 
                         astLines.Insert(insertpos++, new GrammarLine(newlinenumber++, new List<GramarStmt> {line.Stmts[1]}));
