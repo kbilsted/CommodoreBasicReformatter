@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace CommodoreBasicReformatter
 {
@@ -55,7 +54,7 @@ namespace CommodoreBasicReformatter
         {
             var lineNo = Eat(TokenKind.Digit);
 
-            var content = new List<GramarStmt>();
+            var content = new List<GrammarStmt>();
             content.Add(ParseStmt());
 
             while (Peek(TokenKind.Colon))
@@ -82,7 +81,7 @@ namespace CommodoreBasicReformatter
             return tokens[pos].Type == type;
         }
 
-        GramarStmt ParseStmt()
+        GrammarStmt ParseStmt()
         {
             var content = tokens
                 .Skip(pos)
@@ -91,56 +90,29 @@ namespace CommodoreBasicReformatter
 
             pos += content.Count;
 
-            return new GramarStmt(content);
+            return new GrammarStmt(content);
         }
     }
 
     class GrammarLine
     {
         public readonly int LineNumber;
-        public readonly List<GramarStmt> Stmts;
+        public readonly List<GrammarStmt> Stmts;
 
-        public GrammarLine(int linenumber, List<GramarStmt> stmts)
+        public GrammarLine(int linenumber, List<GrammarStmt> stmts)
         {
             LineNumber = linenumber;
             Stmts = stmts;
         }
-
-        public override string ToString()
-        {
-            var sb = new StringBuilder();
-            return $"{LineNumber} {string.Join(" : ", Stmts.Select(x => x.ToString()))}";
-        }
     }
 
-    class GramarStmt
+    class GrammarStmt
     {
         public readonly List<Token> Content;
 
-        public GramarStmt(List<Token> content)
+        public GrammarStmt(List<Token> content)
         {
             Content = content;
-        }
-
-        public override string ToString()
-        {
-            var sb = new StringBuilder();
-            for (int i = 0; i < Content.Count - 1; i++)
-            {
-                var current = Content[i];
-                sb.Append(current.Value);
-
-                if (current.Type == TokenKind.Symbol && current.Value != "=")
-                    continue;
-
-                var next = Content[i + 1];
-                if (next.Type != TokenKind.Symbol || next.Value == "=")
-                    sb.Append(" ");
-            }
-
-            sb.Append(Content.Last().Value);
-
-            return sb.ToString();
         }
     }
 }
