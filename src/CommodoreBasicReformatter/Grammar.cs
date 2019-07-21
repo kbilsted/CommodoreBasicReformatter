@@ -17,19 +17,16 @@ namespace CommodoreBasicReformatter
      * NEWLINE ::= '\n'
      * COLON   ::= ':'
      */
-    class Grammar
+    public class Grammar
     {
-        readonly List<Token> tokens;
+        List<Token> tokens;
         int pos;
 
-        public Grammar(string text)
+        public List<GrammarLine> Parse(string text)
         {
             var t = new Tokenizer(text);
             tokens = t.ReadAll();
-        }
 
-        public List<GrammarLine> Parse()
-        {
             var result = new List<GrammarLine>();
 
             while (!Peek(TokenKind.EOF))
@@ -94,7 +91,7 @@ namespace CommodoreBasicReformatter
         }
     }
 
-    class GrammarLine
+    public class GrammarLine
     {
         public readonly int LineNumber;
         public readonly List<GrammarStmt> Stmts;
@@ -106,7 +103,7 @@ namespace CommodoreBasicReformatter
         }
     }
 
-    class GrammarStmt
+    public class GrammarStmt
     {
         public readonly List<Token> Content;
 

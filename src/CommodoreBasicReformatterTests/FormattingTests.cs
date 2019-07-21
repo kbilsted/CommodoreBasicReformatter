@@ -1,6 +1,3 @@
-using System;
-using System.IO;
-using System.Net;
 using CommodoreBasicReformatter;
 using Xunit;
 
@@ -410,17 +407,25 @@ namespace CommodoreBasicReformatterTests
 943 next z
 944 return
 ";
+
+        Reformatter Create()
+        {
+            return new Reformatter(new Grammar(), new StmtsSplitter());
+        }
+
         [Fact]
         public void Reformat()
         {
-            var output = new Reformatter(new StmtsSplitter()).Reformat(RagingRobotsInput, false);
+            var output = Create().Reformat(RagingRobotsInput, false);
+
             Assert.Equal(RagingRobotsOut, output);
         }
 
         [Fact]
         public void ReformatAndSplitLines()
         {
-            var output = new Reformatter(new StmtsSplitter()).Reformat(RagingRobotsInput, true);
+            var output = Create().Reformat(RagingRobotsInput, true);
+
             Assert.Equal(RagingRobotsRenumberedOut, output);
         }
 
@@ -433,7 +438,7 @@ namespace CommodoreBasicReformatterTests
 35 printi
 44 nexti
 ";
-            var output = new Reformatter(new StmtsSplitter()).Reformat(program, false);
+            var output = Create().Reformat(program, false);
             Assert.Equal(@"10 a = 10
 20 b = 15
 30 for i = a to b

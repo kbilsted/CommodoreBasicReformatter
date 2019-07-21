@@ -5,17 +5,18 @@ namespace CommodoreBasicReformatter
 {
     public class Reformatter
     {
+        readonly Grammar grammer;
         readonly StmtsSplitter splitter;
 
-        public Reformatter(StmtsSplitter splitter)
+        public Reformatter(Grammar grammer, StmtsSplitter splitter)
         {
+            this.grammer = grammer;
             this.splitter = splitter;
         }
 
         public string Reformat(string fileContent, bool splitLines)
         {
-            var g = new Grammar(fileContent);
-            var astLines = g.Parse();
+            var astLines = grammer.Parse(fileContent);
 
             if (splitLines)
                 splitter.SplitLines(astLines);
