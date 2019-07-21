@@ -90,10 +90,7 @@ namespace CommodoreBasicReformatter
 
         void SkipSpaces()
         {
-            if (pos == Text.Length)
-                return;
-
-            while (Text[pos] == ' ' && pos < Text.Length - 1)
+            while (pos < Text.Length && Text[pos] == ' ')
                 pos++;
         }
 
