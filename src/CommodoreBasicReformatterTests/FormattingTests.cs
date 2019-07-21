@@ -413,14 +413,14 @@ namespace CommodoreBasicReformatterTests
         [Fact]
         public void Reformat()
         {
-            var output = new Reformatter().Reformat(RagingRobotsInput, false);
+            var output = new Reformatter(new StmtsSplitter()).Reformat(RagingRobotsInput, false);
             Assert.Equal(RagingRobotsOut, output);
         }
 
         [Fact]
         public void ReformatAndSplitLines()
         {
-            var output = new Reformatter().Reformat(RagingRobotsInput, true);
+            var output = new Reformatter(new StmtsSplitter()).Reformat(RagingRobotsInput, true);
             Assert.Equal(RagingRobotsRenumberedOut, output);
         }
 
@@ -433,7 +433,7 @@ namespace CommodoreBasicReformatterTests
 35 printi
 44 nexti
 ";
-            var output = new Reformatter().Reformat(program, false);
+            var output = new Reformatter(new StmtsSplitter()).Reformat(program, false);
             Assert.Equal(@"10 a = 10
 20 b = 15
 30 for i = a to b

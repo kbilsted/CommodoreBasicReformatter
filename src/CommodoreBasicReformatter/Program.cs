@@ -31,7 +31,7 @@ namespace CommodoreBasicReformatter
             var input = args[i++];
             var output = args[i++];
 
-            var result = new Reformatter().Reformat(File.ReadAllText(input), splitLines);
+            var result = new Reformatter(new StmtsSplitter()).Reformat(File.ReadAllText(input), splitLines);
             File.WriteAllBytes(output, Encoding.ASCII.GetBytes(result));
         }
     }
