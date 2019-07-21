@@ -174,17 +174,17 @@ namespace CommodoreBasicReformatter
         }
 
         Token ParseKeyword()
+        static readonly string[] keywords =
         {
-            string[] keywords =
-            {
-                "to", "then", "end", "for", "next", "data", "input#", "input", "dim", "read", "let", "goto", "run", "if", "restore",
-                "gosub", "return", "rem",
-                "stop", "on", "wait", "load", "save", "verify", "def", "poke", "print#", "print", "cont", "list", "clr", "cmd", "sys",
-                "open", "close", "get", "new",
-                "fn", "not", "step", "and", "or", "sgn", "abs", "usr", "fre", "pos", "sqr", "rnd", "log", "exp", "cos", "sin", "tan", "atn",
-                "peek", "len", "str$", "val",
-                "asc", "chr$", "left$", "right$", "mid$",
-            };
+            "to", "then", "end", "for", "next", "data", "input#", "input", "dim", "read", "let", "goto", "run", "if", "restore",
+            "gosub", "return", "rem",
+            "stop", "on", "wait", "load", "save", "verify", "def", "poke", "print#", "print", "cont", "list", "clr", "cmd", "sys",
+            "open", "close", "get", "new",
+            "fn", "not", "step", "and", "or", "sgn", "abs", "usr", "fre", "pos", "sqr", "rnd", "log", "exp", "cos", "sin", "tan", "atn",
+            "peek", "len", "str$", "val",
+            "asc", "chr$", "left$", "right$", "mid$",
+        };
+
 
             var text = Text.Substring(pos);
             var match = keywords
