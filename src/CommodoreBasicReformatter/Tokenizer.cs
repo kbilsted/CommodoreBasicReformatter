@@ -118,7 +118,9 @@ namespace CommodoreBasicReformatter
                 return null;
 
             int i = 1;
-            while (pos + i < Text.Length && (char.IsLetterOrDigit(Text[pos + i]) || Text[pos + i] == '$' || Text[pos + i] == '%'))
+            while (pos + i < Text.Length 
+                   && (char.IsLetterOrDigit(Text[pos + i]) || Text[pos + i] == '$' || Text[pos + i] == '%') 
+                   && GetKeywordAt(pos+i) == null)
                 i++;
 
             var t = new Token(TokenKind.Name, Text.Substring(pos, i));
@@ -173,7 +175,6 @@ namespace CommodoreBasicReformatter
             return new Token(TokenKind.Symbol, match);
         }
 
-        Token ParseKeyword()
         static readonly string[] keywords =
         {
             "to", "then", "end", "for", "next", "data", "input#", "input", "dim", "read", "let", "goto", "run", "if", "restore",
@@ -185,12 +186,20 @@ namespace CommodoreBasicReformatter
             "asc", "chr$", "left$", "right$", "mid$",
         };
 
-
-            var text = Text.Substring(pos);
+        string GetKeywordAt(int position)
+        {
+            var text = Text.Substring(position);
             var match = keywords
                 .Where(x => text.StartsWith(x, StringComparison.OrdinalIgnoreCase))
                 .OrderByDescending(x => x.Length)
                 .FirstOrDefault();
+
+            return match;
+        }
+
+        Token ParseKeyword()
+        {
+            var match = GetKeywordAt(pos);
 
             if (match == null)
                 return null;
@@ -198,10 +207,11 @@ namespace CommodoreBasicReformatter
             Token result;
             if (match == "rem")
             {
-                var posNewline = text.IndexOf('\n');
-                var commentTextExcludingNewline = $"rem {text.Substring(3, posNewline - 3).Trim()}";
+                var posNewline = Text.IndexOf('\n', pos);
+                var content = Text.Substring(pos + 3, posNewline - pos - 3).Trim();
+                var commentTextExcludingNewline = $"rem {content}";
                 result = new Token(TokenKind.Keyword, commentTextExcludingNewline);
-                pos += posNewline;
+                pos = posNewline;
             }
             else
             {

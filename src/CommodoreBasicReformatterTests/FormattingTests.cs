@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using System.Linq;
 using System.Net;
 using CommodoreBasicReformatter;
 using Xunit;
@@ -426,21 +425,21 @@ namespace CommodoreBasicReformatterTests
         }
 
         [Fact]
-        public void TokenizeRemLines()
+        public void ReformatCodeWithNoSpaces()
         {
-            string input =
-                @"1 REM*********************************
+            var program = @"10 a=10
+20 b=15
+30 fori=atob
+35 printi
+44 nexti
 ";
-
-            var tokenizer=new Tokenizer(input);
-            var tokens = tokenizer.ReadAll();
-            Assert.Equal(new[]
-            {
-                TokenKind.Digit,
-                TokenKind.Keyword,
-                TokenKind.NewLine,
-                TokenKind.EOF
-            }, tokens.Select(x => x.Type).ToArray());
+            var output = new Reformatter().Reformat(program, false);
+            Assert.Equal(@"10 a = 10
+20 b = 15
+30 for i = a to b
+35 print i
+44 next i
+", output);
         }
     }
 }
