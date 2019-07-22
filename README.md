@@ -2,6 +2,9 @@
 
 This tool reformats Commodore BASIC programs to make them more readable. It also support breaking multiple statements on a line into several lines for added readability.
 
+![c64 basic](c64.png)
+
+
 ## 1. Supported platforms
 
 The code is written in .Net core so it should run on Windows, Linux, MAC OS
