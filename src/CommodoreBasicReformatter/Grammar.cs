@@ -104,7 +104,7 @@ namespace CommodoreBasicReformatter
     public class GrammarLine
     {
         public readonly int LineNumber;
-        public readonly List<GrammarStmt> Stmts;
+        public List<GrammarStmt> Stmts;
 
         public GrammarLine(int linenumber, List<GrammarStmt> stmts)
         {

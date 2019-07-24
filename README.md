@@ -32,7 +32,11 @@ The code is so dense. If we reformat it with our tool, it becomes
 	280 rr = rq*rnd(0) : dim r(nr),p(nr) : r = nr
 	290 print ""."" : for i = 1 to 80 : poke vl,5 : poke vl,0
 
-which is much nicer. But we can improve readability even more by using the `--split-lines` flag. Then the code becomes
+which is much nicer to the eye.
+
+
+### 3.1 `--split-lines`
+ But we can improve readability even more by using the `--split-lines` flag. Then the code becomes
 
 	250 vl = 54296
 	251 ad = 54277
@@ -57,6 +61,16 @@ which is much nicer. But we can improve readability even more by using the `--sp
 	291 for i = 1 to 80
 	292 poke vl,5
 	293 poke vl,0
+
+Not all lines are split, however. Then-blocks are excluded as it would change the semantics if the code. For example, the line:
+
+    390 da=asc(d$) :ifda=145thendp=-40:goto480
+
+becomes
+
+    390 da = asc(d$)
+    391 if da = 145 then dp =-40 : goto 480
+
 
 
 ## 4. How it works

@@ -257,9 +257,7 @@ namespace CommodoreBasicReformatterTests
 350 poke cs+yu,1
 351 poke qa,0
 352 ys = peek(895)
-360 if r = 0 then print "".you win""
-361 ys = ys+1
-362 goto 840
+360 if r = 0 then print "".you win"" : ys = ys+1 : goto 840
 370 print "".your turn  ""
 371 poke qa,0
 372 wait qa,1
@@ -267,27 +265,18 @@ namespace CommodoreBasicReformatterTests
 381 ys = peek(895)
 382 if d$ = """" then 380
 390 da = asc(d$)
-391 if da = 145 then dp =-40
-392 goto 480
-400 if da = 17 then dp = 40 : rem down
-401 goto 480
-410 if da = 157 then dp =-1 : rem left
-411 goto 480
-420 if da = 29 then dp = 1 : rem right
-421 goto 480
-430 if da = 133 then dp =-41 : rem up-left
-431 goto 480
-440 if da = 134 then dp =-39 : rem up-right
-441 goto 480
-450 if da = 135 then dp = 41 : rem down-right
-451 goto 480
-460 if da = 136 then dp = 39 : rem down-left
-461 goto 480
+391 if da = 145 then dp =-40 : goto 480
+400 if da = 17 then dp = 40 : goto 480 : rem down
+410 if da = 157 then dp =-1 : goto 480 : rem left
+420 if da = 29 then dp = 1 : goto 480 : rem right
+430 if da = 133 then dp =-41 : goto 480 : rem up-left
+440 if da = 134 then dp =-39 : goto 480 : rem up-right
+450 if da = 135 then dp = 41 : goto 480 : rem down-right
+460 if da = 136 then dp = 39 : goto 480 : rem down-left
 470 goto 360 : rem * invalid keystroke so go back
 480 yn = yu+dp
 481 if yn<40 or yn>999 then yn = 500
-490 if peek(sc+yn)<>32 then lc = yu
-491 goto 790
+490 if peek(sc+yn)<>32 then lc = yu : goto 790
 500 poke sc+yn,81
 501 poke cs+yn,1
 502 poke sc+yu,32
@@ -297,8 +286,7 @@ namespace CommodoreBasicReformatterTests
 513 gosub 900
 520 print "".                  ""
 521 for i = 1 to nr
-530 if peek(sc+r(i))= 32 then p(i)= 0
-531 goto 730
+530 if peek(sc+r(i))= 32 then p(i)= 0 : goto 730
 540 if p(i)= 0 goto 730
 550 x1 = r(i)-40*int(r(i)/40)
 560 x2 = yu-40*int(yu/40)
@@ -317,17 +305,10 @@ namespace CommodoreBasicReformatterTests
 602 gosub 900
 610 d2 = peek(sc+j2)
 611 if x = o goto 660
-620 if d1 = 81 then p(i)= 0
-621 lc = sc+yu
-622 goto 790
-630 if d1 = 102 then lc = sc+j1
-631 p(i)= 0
-632 r = r-1
-640 if d1 = 214 then lc = sc+j1
-641 p(i)= 0
-642 r = r-2
-650 if d1 = 102 or d1 = 214 then gosub 770
-651 goto 730
+620 if d1 = 81 then p(i)= 0 : lc = sc+yu : goto 790
+630 if d1 = 102 then lc = sc+j1 : p(i)= 0 : r = r-1
+640 if d1 = 214 then lc = sc+j1 : p(i)= 0 : r = r-2
+650 if d1 = 102 or d1 = 214 then gosub 770 : goto 730
 660 if p(i)= 0 or y = 0 goto 730
 670 poke sc+j2,214
 671 poke cs+j2,4
@@ -335,15 +316,9 @@ namespace CommodoreBasicReformatterTests
 680 r(i)= j2
 681 tp = 30+i*2
 682 gosub 900
-690 if d2 = 81 then p(i)= 0
-691 lc = sc+yu
-692 goto 790
-700 if d2 = 102 then lc = sc+j2
-701 p(i)= 0
-702 r = r-1
-710 if d2 = 214 then lc = sc+j2
-711 p(i)= 0
-712 r = r-2
+690 if d2 = 81 then p(i)= 0 : lc = sc+yu : goto 790
+700 if d2 = 102 then lc = sc+j2 : p(i)= 0 : r = r-1
+710 if d2 = 214 then lc = sc+j2 : p(i)= 0 : r = r-2
 720 if d2 = 102 or d2 = 214 then gosub 770
 730 next i
 731 rc = 0
@@ -429,17 +404,33 @@ namespace CommodoreBasicReformatterTests
             Assert.Equal(RagingRobotsRenumberedOut, output);
         }
 
+        [Theory]
+        [InlineData(
+            @"390 da=asc(d$) :ifda=145thendp=-40:goto480",
+            @"390 da = asc(d$)
+391 if da = 145 then dp =-40 : goto 480")]
+        [InlineData(
+            @"360 ifr=0thenprint"".you win"":ys=ys+1:goto840",
+            @"360 if r = 0 then print "".you win"" : ys = ys+1 : goto 840")]
+        public void DoNotReformatThenBlocksAsItWouldChangeSemantics(string programInput, string expectedOutput)
+        {
+            var output = Create().Reformat(programInput, true);
+            Assert.Equal(expectedOutput, output.Trim());
+        }
+
         [Fact]
         public void ReformatCodeWithNoSpaces()
         {
-            var program = @"10 a=10
+            var program = 
+@"10 a=10
 20 b=15
 30 fori=atob
 35 printi
 44 nexti
 ";
             var output = Create().Reformat(program, false);
-            Assert.Equal(@"10 a = 10
+            Assert.Equal(
+@"10 a = 10
 20 b = 15
 30 for i = a to b
 35 print i

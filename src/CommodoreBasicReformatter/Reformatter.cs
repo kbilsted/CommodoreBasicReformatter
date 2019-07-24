@@ -16,6 +16,9 @@ namespace CommodoreBasicReformatter
 
         public string Reformat(string fileContent, bool splitLines)
         {
+            if (!fileContent.EndsWith('\n'))
+                fileContent += "\n";
+
             var astLines = grammer.Parse(fileContent);
 
             if (splitLines)
