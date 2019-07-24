@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.ExceptionServices;
 
 namespace CommodoreBasicReformatter
 {
@@ -19,7 +18,7 @@ namespace CommodoreBasicReformatter
                     int insertpos = l + 1;
                     while (line.Stmts.Count > 1)
                     {
-                        if (IsRemark(line.Stmts[1].Content[0]))
+                        if (line.Stmts[1].Content[0].IsRemark())
                             break;
 
                         var token = line.Stmts[0].Content[0];
@@ -29,12 +28,12 @@ namespace CommodoreBasicReformatter
 
                         var restOfLineExcludingRemark = line.Stmts
                             .Skip(1)
-                            .Where(x => !IsRemark(x.Content[0]))
+                            .Where(x => !x.Content[0].IsRemark())
                             .ToList();
                         astLines.Insert(insertpos++, new GrammarLine(newlinenumber++, restOfLineExcludingRemark));
 
                         var firstStmtWithRemark = new[] {line.Stmts[0]}
-                            .Union(line.Stmts.Where(x => IsRemark(x.Content[0])))
+                            .Union(line.Stmts.Where(x => x.Content[0].IsRemark()))
                             .ToList();
                         line.Stmts = firstStmtWithRemark;
                     }
@@ -42,9 +41,6 @@ namespace CommodoreBasicReformatter
             }
         }
 
-        bool IsRemark(Token token)
-        {
-            return token.Type == TokenKind.Keyword && token.Value.StartsWith("rem");
-        }
+        
     }
 }

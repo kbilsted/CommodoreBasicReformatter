@@ -27,6 +27,11 @@ namespace CommodoreBasicReformatter
             Value = value;
         }
 
+        public bool IsRemark()
+        {
+            return Type == TokenKind.Keyword && Value.StartsWith("rem");
+        }
+
         public override string ToString()
         {
             return Value;

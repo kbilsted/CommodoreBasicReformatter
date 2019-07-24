@@ -16,7 +16,7 @@ If you cannot find a runtime for your Linux distribution, the tool works fine th
 
 ## 2. Usage
 
-    CommodoreBasicReformatter [--split-lines] <infile> <outfile>
+    CommodoreBasicReformatter [--split-lines] [--add-explanations] <infile> <outfile>
 
 
 ## 3. Example
@@ -40,7 +40,7 @@ The code is so dense. If we reformat it with our tool, it becomes
 which is much nicer to the eye.
 
 
-### 3.1 `--split-lines`
+### 3.1 The `--split-lines` argument 
  But we can improve readability even more by using the `--split-lines` flag. Then the code becomes
 
 	250 vl = 54296
@@ -75,6 +75,39 @@ becomes
 
     390 da = asc(d$)
     391 if da = 145 then dp =-40 : goto 480
+
+
+## 3.2 The `--add-explanations` argument
+
+The tool makes semantic analysis of the code and suggest explanations as comments. The analysis covers
+
+  * Known memory location usage
+  * Known `chr$` codes.
+
+Let's try explaining this very nice 6-line smooth screen scroller. The original code:
+
+	10 print chr$(147) : poke53280,6:poke53281,0
+	20 for l=1024 to 2023:poke l,219:next l
+	30 for l=0 to 7
+	40 poke 53265, (peek(53265) and 240) or 7-l : poke 53270,l
+	50 next l
+	60 goto 30
+
+And this is how the core looks like with explanations. 
+
+	10 rem 53280=Border color
+	10 rem 53281=Background color
+	10 rem 147=Clears screen of any text, and causes the next character to be printed at the upper left-hand corner of the text screen.
+	10 print chr$(147) : poke 53280,6 : poke 53281,0
+	20 rem 1024=Default area of screen memory
+	20 rem 2023=Default area of screen memory
+	20 for l = 1024 to 2023 : poke l,219 : next l
+	30 for l = 0 to 7
+	40 rem 53265=Screen control register #1
+	40 rem 53270=Screen control register #2
+	40 poke 53265,(peek(53265)and 240)or 7-l : poke 53270,l
+	50 next l
+	60 goto 30
 
 
 

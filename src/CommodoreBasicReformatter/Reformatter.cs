@@ -1,41 +1,54 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Text;
+using CommodoreBasicReformatter.Explain;
 
 namespace CommodoreBasicReformatter
 {
     public class Reformatter
     {
-        readonly Grammar grammer;
+        readonly Grammar grammar;
         readonly StmtsSplitter splitter;
+        readonly IExplainer explainer;
 
-        public Reformatter(Grammar grammer, StmtsSplitter splitter)
+        public Reformatter(Grammar grammar, StmtsSplitter splitter, IExplainer explainer)
         {
-            this.grammer = grammer;
+            this.grammar = grammar;
             this.splitter = splitter;
+            this.explainer = explainer;
         }
 
-        public string Reformat(string fileContent, bool splitLines)
+        public string Reformat(string fileContent, Configuration configuration)
         {
             if (!fileContent.EndsWith('\n'))
                 fileContent += "\n";
 
-            var astLines = grammer.Parse(fileContent);
+            var astLines = grammar.Parse(fileContent);
 
-            if (splitLines)
+            if (configuration.SplitLines)
                 splitter.SplitLines(astLines);
+
+            if(configuration.AddExplanations)
+                explainer.AddExplanations(astLines);
 
             var sb = new StringBuilder();
             astLines.Lines.ForEach(x => sb.AppendLine(Format(x)));
             return sb.ToString();
         }
 
-        private static string Format(GrammarLine l)
+        static string Format(GrammarLine l)
         {
             var stmts = string.Join(" : ", l.Stmts.Select(x => Format(x)));
-            return $"{l.LineNumber} {stmts}";
+
+            var explanation=new StringBuilder();
+            l.Explanations
+                .Distinct().ToList()
+                .ForEach(x => explanation.AppendLine($"{l.LineNumber} rem {x}"));
+
+            return  $"{explanation}{l.LineNumber} {stmts}";
         }
 
-        private static string Format(GrammarStmt l)
+        static string Format(GrammarStmt l)
         {
             var sb = new StringBuilder();
             for (int i = 0; i < l.Content.Count - 1; i++)
@@ -55,6 +68,5 @@ namespace CommodoreBasicReformatter
 
             return sb.ToString();
         }
-
     }
 }
