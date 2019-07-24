@@ -3,6 +3,9 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.2</TargetFramework>
+    <StartupObject>CommodoreBasicReformatter.Program</StartupObject>
+    <Authors>Kasper B. Graversen</Authors>
+    <Runtimes>win10-x64</Runtimes>
   </PropertyGroup>
 
 </Project>

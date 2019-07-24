@@ -22,7 +22,7 @@ namespace CommodoreBasicReformatter
         List<Token> tokens;
         int pos;
 
-        public List<GrammarLine> Parse(string text)
+        public GrammarProgram Parse(string text)
         {
             var t = new Tokenizer(text);
             tokens = t.ReadAll();
@@ -36,7 +36,7 @@ namespace CommodoreBasicReformatter
 
             Eat(TokenKind.EOF);
 
-            return result;
+            return new GrammarProgram(result);
         }
 
         Token Eat(TokenKind token)
@@ -88,6 +88,16 @@ namespace CommodoreBasicReformatter
             pos += content.Count;
 
             return new GrammarStmt(content);
+        }
+    }
+
+    public class GrammarProgram
+    {
+        public List<GrammarLine> Lines;
+
+        public GrammarProgram(List<GrammarLine> lines)
+        {
+            Lines = lines;
         }
     }
 

@@ -22,7 +22,7 @@ namespace CommodoreBasicReformatter
                 splitter.SplitLines(astLines);
 
             var sb = new StringBuilder();
-            astLines.ForEach(x => sb.AppendLine(Format(x)));
+            astLines.Lines.ForEach(x => sb.AppendLine(Format(x)));
             return sb.ToString();
         }
 

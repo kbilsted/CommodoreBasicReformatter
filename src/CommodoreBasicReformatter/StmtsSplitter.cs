@@ -4,8 +4,9 @@ namespace CommodoreBasicReformatter
 {
     public class StmtsSplitter
     {
-        internal void SplitLines(List<GrammarLine> astLines)
+        internal void SplitLines(GrammarProgram program)
         {
+            List<GrammarLine> astLines = program.Lines;
             for (int l = 0; l < astLines.Count; l++)
             {
                 var line = astLines[l];
