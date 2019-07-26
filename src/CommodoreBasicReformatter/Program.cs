@@ -50,10 +50,12 @@ namespace CommodoreBasicReformatter
             Console.WriteLine();
             Console.WriteLine("NAME");
             Console.WriteLine("    CommodoreBasicReformatter");
+            Console.WriteLine("VERSION");
+            Console.WriteLine("    1.01");
             Console.WriteLine("SYNTAX");
             Console.WriteLine("    CommodoreBasicReformatter [--split-lines] <infile> <outfile>");
             Console.WriteLine("REMARKS");
-            Console.WriteLine("    (c) 2019 Kasper B. Graversen and Jacob Dahl Pind");
+            Console.WriteLine("    (c) 2019 Kasper B. Graversen");
             Console.WriteLine();
         }
     }

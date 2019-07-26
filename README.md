@@ -9,10 +9,13 @@ This tool reformats Commodore BASIC programs to make them more readable. It also
 
 The code is written in .Net core so it should run on Windows, Linux, MAC OS
 
+Download a binary release from https://github.com/kbilsted/CommodoreBasicReformatter/releases/ or build the source code.
+
 
 ## 2. Usage
 
     CommodoreBasicReformatter [--split-lines] <infile> <outfile>
+
 
 ## 3. Example
 
