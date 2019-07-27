@@ -11,6 +11,8 @@ The code is written in .Net core so it should run on Windows, Linux, MAC OS
 
 Download a binary release from https://github.com/kbilsted/CommodoreBasicReformatter/releases/ or build the source code.
 
+If you cannot find a runtime for your Linux distribution, the tool works fine through Wine.
+
 
 ## 2. Usage
 
