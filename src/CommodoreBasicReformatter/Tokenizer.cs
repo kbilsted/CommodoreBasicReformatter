@@ -172,21 +172,26 @@ namespace CommodoreBasicReformatter
             return new Token(TokenKind.Symbol, match);
         }
 
-        static readonly string[] keywords =
+        static readonly string[] C64BasicV2Keywords =
         {
-            "to", "then", "end", "for", "next", "data", "input#", "input", "dim", "read", "let", "goto", "run", "if", "restore",
-            "gosub", "return", "rem",
-            "stop", "on", "wait", "load", "save", "verify", "def", "poke", "print#", "print", "cont", "list", "clr", "cmd", "sys",
-            "open", "close", "get", "new",
-            "fn", "not", "step", "and", "or", "sgn", "abs", "usr", "fre", "pos", "sqr", "rnd", "log", "exp", "cos", "sin", "tan", "atn",
-            "peek", "len", "str$", "val",
-            "asc", "chr$", "left$", "right$", "mid$",
+            "abs", "and", "asc", "atn", "chr$", "close",
+            "clr", "cmd", "cont", "cos", "data", "def",
+            "dim", "end", "exp", "fn", "for", "fre",
+            "get", "get#", "gosub", "goto","if","input",
+            "input#","int","left$","len","let","list",
+            "load", "log", "mid$","new", "next", "not",
+            "on", "open", "or", "peek", "poke", "pos",
+            "print", "print#","read","rem","restore","return",
+            "right$	rnd", "run", "save", "sgn", "sin",
+            "spc", "sqr", "status", "step", "stop", "str$",
+            "sys", "tab", "tan", "then", "time", "time$", 
+            "to", "usr", "val", "verify", "wait",
         };
 
         string GetKeywordAt(int position)
         {
             var text = Text.Substring(position);
-            var match = keywords
+            var match = C64BasicV2Keywords
                 .Where(x => text.StartsWith(x, StringComparison.OrdinalIgnoreCase))
                 .OrderByDescending(x => x.Length)
                 .FirstOrDefault();
