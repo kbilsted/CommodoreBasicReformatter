@@ -60,7 +60,10 @@ namespace CommodoreBasicReformatter
                 content.Add(ParseStmt());
             }
 
-            Eat(TokenKind.NewLine);
+            if (Peek(TokenKind.EOF))
+                Eat(TokenKind.EOF);
+            else
+                Eat(TokenKind.NewLine);
 
             return new GrammarLine(int.Parse(lineNo.Value), content);
         }
@@ -105,6 +108,7 @@ namespace CommodoreBasicReformatter
     {
         public readonly int LineNumber;
         public List<GrammarStmt> Stmts;
+        public List<string> Explanations = new List<string>();
 
         public GrammarLine(int linenumber, List<GrammarStmt> stmts)
         {

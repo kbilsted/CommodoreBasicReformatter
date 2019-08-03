@@ -1,11 +1,12 @@
 using CommodoreBasicReformatter;
+using CommodoreBasicReformatter.Explain;
 using Xunit;
 
 namespace CommodoreBasicReformatterTests
 {
-    public class UnitTest1
+    public class FormattingTests
     {
-        private static string RagingRobotsInput = 
+        static string RagingRobotsInput = 
             @"1 REM*********************************
 2 REM* RAGING ROBOTS    COMMODORE 64 *
 3 REM* BY LARRY HATCH         V10.28 *
@@ -98,7 +99,7 @@ namespace CommodoreBasicReformatterTests
 940 forq=0to2:nextq:pokewf,128:nextz:return
 ";
 
-        private static string RagingRobotsOut = @"1 rem *********************************
+        static string RagingRobotsOut = @"1 rem *********************************
 2 rem * RAGING ROBOTS    COMMODORE 64 *
 3 rem * BY LARRY HATCH         V10.28 *
 4 rem * MENLO PARK  CALIF 94025  1983 *
@@ -190,7 +191,7 @@ namespace CommodoreBasicReformatterTests
 940 for q = 0 to 2 : next q : poke wf,128 : next z : return
 ";
 
-        private static string RagingRobotsRenumberedOut = @"1 rem *********************************
+        static string RagingRobotsRenumberedOut = @"1 rem *********************************
 2 rem * RAGING ROBOTS    COMMODORE 64 *
 3 rem * BY LARRY HATCH         V10.28 *
 4 rem * MENLO PARK  CALIF 94025  1983 *
@@ -385,13 +386,14 @@ namespace CommodoreBasicReformatterTests
 
         Reformatter Create()
         {
-            return new Reformatter(new Grammar(), new StmtsSplitter());
+            return new Reformatter(new Grammar(), new StmtsSplitter(), new Explainer());
         }
 
         [Fact]
         public void Reformat()
         {
-            var output = Create().Reformat(RagingRobotsInput, false);
+            var options = new Configuration() {SplitLines = false};
+            var output = Create().Reformat(RagingRobotsInput, options);
 
             Assert.Equal(RagingRobotsOut, output);
         }
@@ -399,7 +401,8 @@ namespace CommodoreBasicReformatterTests
         [Fact]
         public void ReformatAndSplitLines()
         {
-            var output = Create().Reformat(RagingRobotsInput, true);
+            var options = new Configuration() { SplitLines = true};
+            var output = Create().Reformat(RagingRobotsInput, options);
 
             Assert.Equal(RagingRobotsRenumberedOut, output);
         }
@@ -414,7 +417,7 @@ namespace CommodoreBasicReformatterTests
             @"360 if r = 0 then print "".you win"" : ys = ys+1 : goto 840")]
         public void DoNotReformatThenBlocksAsItWouldChangeSemantics(string programInput, string expectedOutput)
         {
-            var output = Create().Reformat(programInput, true);
+            var output = Create().Reformat(programInput, new Configuration(){SplitLines = true});
             Assert.Equal(expectedOutput, output.Trim());
         }
 
@@ -428,7 +431,7 @@ namespace CommodoreBasicReformatterTests
 35 printi
 44 nexti
 ";
-            var output = Create().Reformat(program, false);
+            var output = Create().Reformat(program, new Configuration());
             Assert.Equal(
 @"10 a = 10
 20 b = 15
