@@ -1,4 +1,4 @@
-$version="1.02"
+$version="1.03"
 
 cd src
 #dotnet clean CommodoreBasicReformatter\CommodoreBasicReformatter.csproj

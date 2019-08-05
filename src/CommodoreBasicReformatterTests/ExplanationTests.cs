@@ -46,12 +46,12 @@ namespace CommodoreBasicReformatterTests
 10 rem 53281=Background color
 10 rem 147=Clears screen of any text, and causes the next character to be printed at the upper left-hand corner of the text screen.
 10 print chr$(147) : poke 53280,6 : poke 53281,0
-20 rem 1024=Default area of screen memory
-20 rem 2023=Default area of screen memory
+20 rem 1024=Default first area of screen memory (upper left corner)
+20 rem 2023=Default last area of screen memory(lower right corner)
 20 for l = 1024 to 2023 : poke l,219 : next l
 30 for l = 0 to 7
-40 rem 53265=Screen control register #1
-40 rem 53270=Screen control register #2
+40 rem 53265=Screen control register #1 (e.g. for YSCROLL or setting gfx mode)
+40 rem 53270=Screen control register #2 (e.g. for XSCROLL or setting gfx mode)
 40 poke 53265,(peek(53265)and 240)or 7-l : poke 53270,l
 50 next l
 60 goto 30", actual.Trim());
@@ -115,10 +115,10 @@ namespace CommodoreBasicReformatterTests
 @"10 W=53281 : POKE W,1", 
 @"10 rem 53281=Background color
 10 W = 53281 : poke W,1")]
-        [InlineData("20 for l=1024 to 2023:poke l,219:next l",
-@"20 rem 1024=Default area of screen memory
-20 rem 2023=Default area of screen memory
-20 for l = 1024 to 2023 : poke l,219 : next l")]
+        [InlineData("20 for l=1025 to 2022:poke l,219:next l",
+@"20 rem 1025=Default area of screen memory
+20 rem 2022=Default area of screen memory
+20 for l = 1025 to 2022 : poke l,219 : next l")]
         public void ExplainVariableIfUsedIn_Poke(string input, string expected)
         {
             var actual = Create()
@@ -139,10 +139,10 @@ namespace CommodoreBasicReformatterTests
             @"10 W=53281 : SYS W",
             @"10 rem 53281=Background color
 10 W = 53281 : sys W")]
-        [InlineData("20 for l=1024 to 2023:sys l:next l",
-            @"20 rem 1024=Default area of screen memory
-20 rem 2023=Default area of screen memory
-20 for l = 1024 to 2023 : sys l : next l")]
+        [InlineData("20 for l=1025 to 2022:sys l:next l",
+            @"20 rem 1025=Default area of screen memory
+20 rem 2022=Default area of screen memory
+20 for l = 1025 to 2022 : sys l : next l")]
         public void ExplainVariableIfUsedIn_Sys(string input, string expected)
         {
             var actual = Create()
@@ -163,10 +163,10 @@ namespace CommodoreBasicReformatterTests
             @"10 W=53281 : WAIT W",
             @"10 rem 53281=Background color
 10 W = 53281 : wait W")]
-        [InlineData("20 for l=1024 to 2023:wait l:next l",
-            @"20 rem 1024=Default area of screen memory
-20 rem 2023=Default area of screen memory
-20 for l = 1024 to 2023 : wait l : next l")]
+        [InlineData("20 for l=1025 to 2022:wait l:next l",
+            @"20 rem 1025=Default area of screen memory
+20 rem 2022=Default area of screen memory
+20 for l = 1025 to 2022 : wait l : next l")]
         public void ExplainVariableIfUsedIn_Wait(string input, string expected)
         {
             var actual = Create()
@@ -187,10 +187,10 @@ namespace CommodoreBasicReformatterTests
             @"10 W=53281 : PRINT PEEK (W)",
             @"10 rem 53281=Background color
 10 W = 53281 : print peek(W)")]
-        [InlineData("20 for l=1024 to 2023:peek(l):next l",
-            @"20 rem 1024=Default area of screen memory
-20 rem 2023=Default area of screen memory
-20 for l = 1024 to 2023 : peek(l) : next l")]
+        [InlineData("20 for l=1025 to 2022:peek(l):next l",
+            @"20 rem 1025=Default area of screen memory
+20 rem 2022=Default area of screen memory
+20 for l = 1025 to 2022 : peek(l) : next l")]
         public void ExplainVariableIfUsedIn_Peek(string input, string expected)
         {
             var actual = Create()

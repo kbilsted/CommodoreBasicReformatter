@@ -5,7 +5,7 @@ namespace CommodoreBasicReformatter.Explain
 {
     class MemoryExplainer : IExplainer
     {
-        static readonly string AddressExplanations = 
+        static readonly string AddressExplanations =
 @"19 | Current I/O device number
 20-21 | Line number during GOSUB, GOTO and RUN. Mem adr during PEEK, POKE, SYS and WAIT
 23-24 | Pointer to previous expression in string stack
@@ -172,7 +172,9 @@ namespace CommodoreBasicReformatter.Explain
 816-817 | Execution address of LOAD, routine loading files
 818-819 | Execution address of SAVE, routine saving files
 828-1019 | Datasette buffer
-1024-2023 | Default area of screen memory
+1024      | Default first area of screen memory (upper left corner)
+1025-2022 | Default area of screen memory
+2023      | Default last area of screen memory(lower right corner)
 2040-2047 | Default area for sprite pointers
 2048 | Unused. (Must contain a value of 0 so that the BASIC program can be RUN.)
 53248 | Sprite #0 X-coordinate
@@ -192,12 +194,12 @@ namespace CommodoreBasicReformatter.Explain
 53262 | Sprite #7 X-coordinate
 53263 | Sprite #7 Y-coordinate
 53264 | Sprite #0-#7 X-coordinates
-53265 | Screen control register #1
+53265 | Screen control register #1 (e.g. for YSCROLL or setting gfx mode)
 53266 | Read: Current raster line. 
 53267 | Light pen X-coordinate
 53268 | Light pen Y-coordinate
 53269 | Sprite enable register
-53270 | Screen control register #2
+53270 | Screen control register #2 (e.g. for XSCROLL or setting gfx mode)
 53271 | Sprite double height register
 53272 | Memory setup register. 
 53273 | Interrupt status register. Read
